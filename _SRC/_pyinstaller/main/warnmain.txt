@@ -1,7 +1,7 @@
 missing module named resource - imported by posix, E:\repos\david\ConanServerManager\_SRC\main.py
 missing module named posix - imported by os, E:\repos\david\ConanServerManager\_SRC\main.py
 missing module named _posixsubprocess - imported by subprocess, E:\repos\david\ConanServerManager\_SRC\main.py
-missing module named 'org.python' - imported by pickle, E:\repos\david\ConanServerManager\_SRC\main.py, xml.sax
+missing module named org - imported by pickle, E:\repos\david\ConanServerManager\_SRC\main.py
 missing module named readline - imported by cmd, code, pdb, E:\repos\david\ConanServerManager\_SRC\main.py
 excluded module named _frozen_importlib - imported by importlib, importlib.abc, E:\repos\david\ConanServerManager\_SRC\main.py
 missing module named _frozen_importlib_external - imported by importlib._bootstrap, importlib, importlib.abc, E:\repos\david\ConanServerManager\_SRC\main.py
@@ -12,9 +12,9 @@ missing module named 'java.lang' - imported by platform, E:\repos\david\ConanSer
 missing module named vms_lib - imported by platform, E:\repos\david\ConanServerManager\_SRC\main.py
 missing module named termios - imported by tty, getpass, E:\repos\david\ConanServerManager\_SRC\main.py
 missing module named grp - imported by shutil, tarfile, pathlib, E:\repos\david\ConanServerManager\_SRC\main.py
+missing module named 'org.python' - imported by copy, E:\repos\david\ConanServerManager\_SRC\main.py, xml.sax
 missing module named pwd - imported by posixpath, shutil, tarfile, http.server, webbrowser, psutil, netrc, getpass, pathlib, E:\repos\david\ConanServerManager\_SRC\main.py
 missing module named _dummy_threading - imported by dummy_threading, E:\repos\david\ConanServerManager\_SRC\main.py
-missing module named org - imported by copy, E:\repos\david\ConanServerManager\_SRC\main.py
 missing module named psutil._psutil_aix - imported by psutil, psutil._psaix
 missing module named psutil._psutil_sunos - imported by psutil, psutil._pssunos
 missing module named psutil._psutil_bsd - imported by psutil, psutil._psbsd
