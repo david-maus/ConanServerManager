@@ -2,7 +2,7 @@
 [GEF-GAMING.DE](http://www.gef-gaming.de)
 ---
 ![alt text](https://i.imgur.com/bYqrHNO.png)
-## **Server starter / Weather randomizer / Multiple Configs**
+
 
 *** ------Linux support coming soon / Video & Pictured tutorial coming soon------***
 
