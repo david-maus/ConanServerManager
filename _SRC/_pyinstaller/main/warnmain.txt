@@ -1,0 +1,27 @@
+missing module named resource - imported by posix, E:\repos\david\ConanServerManager\_SRC\main.py
+missing module named posix - imported by os, E:\repos\david\ConanServerManager\_SRC\main.py
+missing module named _posixsubprocess - imported by subprocess, E:\repos\david\ConanServerManager\_SRC\main.py
+missing module named 'org.python' - imported by pickle, E:\repos\david\ConanServerManager\_SRC\main.py, xml.sax
+missing module named readline - imported by cmd, code, pdb, E:\repos\david\ConanServerManager\_SRC\main.py
+excluded module named _frozen_importlib - imported by importlib, importlib.abc, E:\repos\david\ConanServerManager\_SRC\main.py
+missing module named _frozen_importlib_external - imported by importlib._bootstrap, importlib, importlib.abc, E:\repos\david\ConanServerManager\_SRC\main.py
+missing module named _winreg - imported by platform, E:\repos\david\ConanServerManager\_SRC\main.py
+missing module named _scproxy - imported by urllib.request
+missing module named java - imported by platform, E:\repos\david\ConanServerManager\_SRC\main.py
+missing module named 'java.lang' - imported by platform, E:\repos\david\ConanServerManager\_SRC\main.py, xml.sax._exceptions
+missing module named vms_lib - imported by platform, E:\repos\david\ConanServerManager\_SRC\main.py
+missing module named termios - imported by tty, getpass, E:\repos\david\ConanServerManager\_SRC\main.py
+missing module named grp - imported by shutil, tarfile, pathlib, E:\repos\david\ConanServerManager\_SRC\main.py
+missing module named pwd - imported by posixpath, shutil, tarfile, http.server, webbrowser, psutil, netrc, getpass, pathlib, E:\repos\david\ConanServerManager\_SRC\main.py
+missing module named _dummy_threading - imported by dummy_threading, E:\repos\david\ConanServerManager\_SRC\main.py
+missing module named org - imported by copy, E:\repos\david\ConanServerManager\_SRC\main.py
+missing module named psutil._psutil_aix - imported by psutil, psutil._psaix
+missing module named psutil._psutil_sunos - imported by psutil, psutil._pssunos
+missing module named psutil._psutil_bsd - imported by psutil, psutil._psbsd
+missing module named psutil._psutil_osx - imported by psutil, psutil._psosx
+missing module named _psutil_linux - imported by psutil
+missing module named psutil._psutil_posix - imported by psutil, psutil._pslinux, psutil._psosx, psutil._psbsd, psutil._pssunos, psutil._psaix
+missing module named port_v2 - imported by PyQt5.uic.properties
+missing module named StringIO - imported by PyQt5.uic.port_v2.string_io
+missing module named cStringIO - imported by PyQt5.uic.port_v2.string_io
+missing module named copy_reg - imported by cStringIO
