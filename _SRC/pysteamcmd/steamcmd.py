@@ -115,3 +115,22 @@ class Steamcmd(object):
             return subprocess.call(steamcmd_params)
         except subprocess.CalledProcessError:
             raise SteamcmdException("Steamcmd was unable to run. Did you install your 32-bit libraries?")
+
+    def install_mods(self, gameid, game_install_dir, user=None, password=None, validate=False, modID=None):
+        if validate:
+            validate = 'validate'
+        else:
+            validate = None
+
+        steamcmd_params = (
+            self.steamcmd_exe,
+            '+login {} {}'.format(user, password),
+            '+force_install_dir {}'.format(game_install_dir),
+            '+workshop_download_item {} {}'.format(gameid, modID),
+            '{}'.format(validate),
+            '+quit',
+        )
+        try:
+            return subprocess.call(steamcmd_params)
+        except subprocess.CalledProcessError:
+            raise SteamcmdException("Steamcmd was unable to run. Did you install your 32-bit libraries?")

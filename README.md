@@ -1,7 +1,7 @@
 # **Conan Server Manager - beta**
 [GEF-GAMING.DE](http://www.gef-gaming.de)
 ---
-![alt text](https://i.imgur.com/bYqrHNO.png)
+![alt text](https://i.imgur.com/e6nOQfb.png)
 
 
 *** ------Linux support coming soon / Video & Pictured tutorial coming soon------***

@@ -17,14 +17,17 @@ from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QWidget, QInputDialog, QLineEdit, QFileDialog
 from PyQt5.QtGui import QIcon
 from ui import resources
-import time
+from datetime import datetime, time
+from time import sleep
 import psutil
 import subprocess
 from configparser import ConfigParser
 import pysteamcmd
 import pathlib
 import webbrowser
-from modules import design, functions
+import re
+from glob import glob
+from modules import design, functions, getSteamWorkshopMods
 
 
 # ---------------------------------------------------------------------------------------
@@ -103,6 +106,12 @@ class mainWindow(QtWidgets.QDialog):
         self.lineServerPort.setText(ServerPort)
         self.lineSteamPort.setText(SteamPort)
         self.lineAdminPW.setText(AdminPW)
+        self.lineCollection.setText(collection)
+
+        if(collectionDisable == True):
+            self.checkDisableMods.setChecked(True)
+        else:
+            self.checkDisableMods.setChecked(False)
 
         # Button Mapping
         self.buttonPath.clicked.connect(self.saveFileDialog)
@@ -125,6 +134,7 @@ class mainWindow(QtWidgets.QDialog):
 
         else:
             self.linePath.setText(my_dir)
+            self.saveConfig()
 
     def resetServerRestartFlag(self):
         global stopRestartFlag
@@ -177,7 +187,7 @@ class mainWindow(QtWidgets.QDialog):
         self.StartServerThread_T = StartServerThread(conanExePath, conanParameters)
         self.waiterThread_T = waiterThread(ServerRestart)
 
-        time.sleep(1)
+        sleep(1)
         global stopRestartFlag
         if stopRestartFlag:
             pass
@@ -214,8 +224,16 @@ class mainWindow(QtWidgets.QDialog):
         ServerPort = self.lineServerPort.text()
         SteamPort = self.lineSteamPort.text()
         AdminPW = self.lineAdminPW.text()
+        collection = self.lineCollection.text()
 
-        writeSettings(my_dir, ServerName, ServerRestart, MaxPlayers, ServerPort, SteamPort, AdminPW)
+
+        if(self.checkDisableMods.isChecked()):
+            collectionDisable = 'True'
+        else:
+            collectionDisable = 'False'
+
+
+        writeSettings(my_dir, ServerName, ServerRestart, MaxPlayers, ServerPort, SteamPort, AdminPW, collection, collectionDisable)
         readSettings()
 
     def eventFilter(self, target, event):
@@ -243,6 +261,8 @@ def readSettings():
     global ServerPort
     global SteamPort
     global AdminPW
+    global collection
+    global collectionDisable
 
     if os.path.isfile(settingsPath):
 
@@ -256,6 +276,8 @@ def readSettings():
         ServerPort = config['SETTINGS']['ServerPort']
         SteamPort = config['SETTINGS']['SteamPort']
         AdminPW = config['SETTINGS']['AdminPW']
+        collection = config['SETTINGS']['collection']
+        collectionDisable = config.getboolean('SETTINGS', 'collectionDisable')
 
 
 
@@ -267,6 +289,8 @@ def readSettings():
         ServerPort = ''
         SteamPort = ''
         AdminPW = ''
+        collection = ''
+        collectionDisable = ''
 
         open(settingsPath, "w+").close()
         config = ConfigParser()
@@ -279,12 +303,14 @@ def readSettings():
         config.set('SETTINGS', 'ServerPort', ServerPort)
         config.set('SETTINGS', 'SteamPort', SteamPort)
         config.set('SETTINGS', 'AdminPW', AdminPW)
+        config.set('SETTINGS', 'collection', collection)
+        config.set('SETTINGS', 'collectionDisable', collectionDisable)
 
         with open(settingsPath, 'w', encoding='utf8') as configfile:
             config.write(configfile)
 
 
-def writeSettings(ConanServerPathNEW, ServerNameNEW, ServerRestartNEW, MaxPlayersNEW, ServerPortNEW, SteamPortNEW, AdminPWNEW):
+def writeSettings(ConanServerPathNEW, ServerNameNEW, ServerRestartNEW, MaxPlayersNEW, ServerPortNEW, SteamPortNEW, AdminPWNEW, collectionNEW, collectionDisableNEW):
 
     config = ConfigParser()
     config.read(settingsPath, encoding='utf8')
@@ -296,6 +322,8 @@ def writeSettings(ConanServerPathNEW, ServerNameNEW, ServerRestartNEW, MaxPlayer
     config['SETTINGS']['ServerPort'] = ServerPortNEW
     config['SETTINGS']['SteamPort'] = SteamPortNEW
     config['SETTINGS']['AdminPW'] = AdminPWNEW
+    config['SETTINGS']['collection'] = collectionNEW
+    config['SETTINGS']['collectionDisable'] = collectionDisableNEW
 
     with open(settingsPath, 'w', encoding='utf8') as configfile:
         config.write(configfile)
@@ -307,6 +335,8 @@ def writeSettings(ConanServerPathNEW, ServerNameNEW, ServerRestartNEW, MaxPlayer
     global ServerPort
     global SteamPort
     global AdminPW
+    global collection
+    global collectionDisable
 
     ConanServerPath = ConanServerPathNEW
     ServerName = ServerNameNEW
@@ -315,6 +345,8 @@ def writeSettings(ConanServerPathNEW, ServerNameNEW, ServerRestartNEW, MaxPlayer
     ServerPort = ServerPortNEW
     SteamPort = SteamPortNEW
     AdminPW = AdminPWNEW
+    collection = collectionNEW
+    collectionDisable = collectionDisableNEW
 
     readSettings()
 
@@ -330,6 +362,51 @@ def installServer():
     steamcmd = pysteamcmd.Steamcmd(steamcmd_path)
     steamcmd.install()
     steamcmd.install_gamefiles(gameid=443030, game_install_dir=gameserver_path, user='anonymous', password=None, validate=True)
+
+
+    if(collectionDisable == False and collection):
+
+        if('http' in collection):
+            collectionID = re.compile(r'(\d+)$').search(collection).group(1)
+        else:
+            collectionID = collection
+        steamModlist = getSteamWorkshopMods.getSteamModsFromCollection(collectionID).getCollectionInfo()
+        for mod in steamModlist:
+            modID = mod[0]
+            steamcmd.install_mods(gameid=440900, game_install_dir=gameserver_path, user='anonymous', password=None, validate=True, modID=modID)
+
+        modListFolder = os.path.join(gameserver_path, 'ConanSandbox', 'Mods')
+        modListTXT = os.path.join(modListFolder, 'modlist.txt')
+        modRootFolder = os.path.join(gameserver_path, 'steamapps', 'workshop', 'content', '440900')
+        if os.path.exists(modListFolder):
+            if os.path.isfile(modListTXT):
+                pass
+            else:
+                open(modListTXT, "w+").close()
+        else:
+            os.mkdir(modListFolder)
+            open(modListTXT, "w+").close()
+
+        with open(modListTXT, 'w', encoding='utf8') as modListTXTIO:
+            for mod in steamModlist:
+                modItemFolder = os.path.join(modRootFolder, mod[0])
+                modFileName = os.listdir(modItemFolder)
+                modFileName = ''.join(modFileName)
+                modFullPath = os.path.join(modItemFolder, modFileName)
+                print(modFullPath)
+                modListTXTIO.write("*{}\n".format(modFullPath))
+    else:
+        modListFolder = os.path.join(gameserver_path, 'ConanSandbox', 'Mods')
+        modListTXT = os.path.join(modListFolder, 'modlist.txt')
+
+        if os.path.exists(modListFolder):
+            if os.path.isfile(modListTXT):
+                open(modListTXT, "w").close()
+            else:
+                pass
+        else:
+            pass
+
 
 
 class waiterThread(QThread):
@@ -349,7 +426,8 @@ class waiterThread(QThread):
         if self.runs:
             ServerRestart = int(self.ServerRestart)
             ServerRestart = int(ServerRestart) * 60
-            time.sleep(ServerRestart)
+            sleep(ServerRestart)
+
 
 
 class StartServerThread(QThread):
