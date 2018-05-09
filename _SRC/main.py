@@ -373,7 +373,7 @@ def installServer():
         steamModlist = getSteamWorkshopMods.getSteamModsFromCollection(collectionID).getCollectionInfo()
         for mod in steamModlist:
             modID = mod[0]
-            steamcmd.install_mods(gameid=440900, game_install_dir=gameserver_path, user='anonymous', password=None, validate=True, modID=modID)
+            steamcmd.install_mods(gameid=440900, game_install_dir=gameserver_path, user='anonymous', password=None, validate=False, modID=modID)
 
         modListFolder = os.path.join(gameserver_path, 'ConanSandbox', 'Mods')
         modListTXT = os.path.join(modListFolder, 'modlist.txt')
@@ -465,7 +465,7 @@ class StartServerThread(QThread):
 
             conanExePath = str(self.conanExePath)
             conanParameters = str(self.conanParameters)
-            installServer()
+            # installServer()
             serverexec = subprocess.Popen(conanExePath + conanParameters)
 
 
